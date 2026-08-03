@@ -61,12 +61,7 @@ export function DashboardSidebar() {
         })}
       </nav>
 
-      <div className="m-3 rounded-2xl p-4 bg-sidebar-accent/60 border border-sidebar-border">
-        <div className="text-xs text-sidebar-foreground/70">Pro tip</div>
-        <div className="mt-1 text-sm font-medium leading-snug">
-          Organize notes by chapter to revise 3× faster.
-        </div>
-      </div>
+
        <div className="px-3 pb-3">
         <button
           type="button"
