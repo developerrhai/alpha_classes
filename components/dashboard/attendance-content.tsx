@@ -70,6 +70,8 @@ export function AttendanceContent() {
   const [editStatus, setEditStatus] = useState<AttendanceRecord["status"]>("Present");
   const [editPunchIn, setEditPunchIn] = useState("");
   const [editPunchOut, setEditPunchOut] = useState("");
+  const [editBioCode, setEditBioCode] = useState("");
+  const [editStudentId, setEditStudentId] = useState("");
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   // Fetch Attendance logs
@@ -162,6 +164,8 @@ export function AttendanceContent() {
     setEditStatus(record.status);
     setEditPunchIn(record.punchIn || "");
     setEditPunchOut(record.punchOut || "");
+    setEditBioCode(record.student.code || "");
+    setEditStudentId(record.student.id?.toString() || "");
     setIsEditOpen(true);
   };
 
@@ -178,7 +182,9 @@ export function AttendanceContent() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          studentCode: editingRecord.student.code,
+          studentCode: editingRecord.student.code, // legacy reference
+          biocode: editBioCode,
+          studentId: editStudentId,
           date,
           status: editStatus,
           punchIn: editPunchIn || null,
@@ -574,6 +580,28 @@ export function AttendanceContent() {
                   <option value="On Leave">On Leave</option>
                   <option value="Half-Day">Half-Day</option>
                 </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="adjBioCode">Bio Code</Label>
+                  <Input
+                    id="adjBioCode"
+                    type="text"
+                    value={editBioCode}
+                    onChange={(e) => setEditBioCode(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="adjStudentId">Student ID</Label>
+                  <Input
+                    id="adjStudentId"
+                    type="text"
+                    value={editStudentId}
+                    onChange={(e) => setEditStudentId(e.target.value)}
+                    disabled
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
