@@ -19,7 +19,7 @@ node_modules
 .vercel
 
 # Custom ignores
-backend/
+*.pem
 merit-home-info.md
 r e c o r d i n g s /  
  r e c o r d i n g s _ t e m p /  
