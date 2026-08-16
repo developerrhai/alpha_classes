@@ -414,7 +414,8 @@ export function StudentsContent() {
               <SelectTrigger><SelectValue placeholder="All Locations" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Locations</SelectItem>
-                <SelectItem value="Main Branch">Main Branch</SelectItem><SelectItem value="Main Branch">Main Branch</SelectItem>
+                <SelectItem value="Main Branch">Main Branch</SelectItem>
+                <SelectItem value="Main Branch">Main Branch</SelectItem>
               </SelectContent>
             </Select>
           </div>
