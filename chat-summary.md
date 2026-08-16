@@ -150,3 +150,25 @@ A complete, end-to-end push notification system was integrated into both the Exp
   - **Push Broadcast Audit Logs Matrix Table**: Real-time delivery stats (`✓ Success` / `✗ Fail`), target role badges, status badges (`Sent` / `Failed`), sender name, and timestamp.
 - **Auto Token Registration**: Automatically registers FCM device tokens when Students log into `StudentShell` or Admins access `/dashboard`.
 
+---
+
+## 9. Production Server Diagnostics, Database Fixes & Git Deployment
+Comprehensive server diagnostic check, schema migration, environment key setup, and git code synchronization completed.
+
+### Database Schema Alignment (`teachers` table)
+- Fixed `ER_BAD_FIELD_ERROR` (`Unknown column 'role' in 'field list'`) encountered during teacher signup.
+- Executed `node src/db/migrate.js` on the EC2 MariaDB instance (`alphaclasses` DB) to add missing columns (`role`, `reset_otp`, `reset_otp_expires`, `last_otp_sent`, `biometric_code`) to `teachers` and verified all other table schema definitions.
+
+### Environment Variable & Security Fixes
+- Added 32-byte `AES_SECRET_KEY=a1b2c3d4e5f67890a1b2c3d4e5f67890` to `/app/alphaclasses-backend/.env` on EC2.
+- Eliminates the runtime crypto warning and ensures encrypted passwords/session payloads remain decryptable across server reboots.
+
+### Git Repository Synchronization
+- Updated `.gitignore` to track `backend/` source files while safely ignoring `.env` and `*.pem` private key files.
+- Staged, committed, and pushed both Frontend and Backend codebases to GitHub: [https://github.com/developerrhai/alpha_classes.git](https://github.com/developerrhai/alpha_classes.git) (`main` branch).
+
+### Production EC2 Deployment & PM2 Restart
+- Synced the updated backend repository code to `/app/alphaclasses-backend/`.
+- Restarted `alphaclasses-backend` (PM2 Process ID `4`) with `--update-env` and flushed old logs (`pm2 flush`).
+- **Verification:** Verified backend server startup health; error logs cleared with **0 errors**.
+

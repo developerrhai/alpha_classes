@@ -40,3 +40,11 @@
 - **API Key:** `371114072602`
 - **Functionality:** Real-time background watcher polls every 30 seconds to fetch biometric punches (`/api/v2/WebAPI/GetDeviceLogs`) and triggers Firebase push notifications to students based on their batch schedules (Late/Present/Exit).
 - **Service Location:** `src/services/smartOfficeWatcher.js` running inside the PM2 process.
+
+---
+
+## 🔧 Recent Server Diagnostics & Deployment Fixes
+- **Database Schema Migration:** Executed `src/db/migrate.js` on MariaDB `alphaclasses` to ensure `role`, `reset_otp`, and `biometric_code` exist in the `teachers` table.
+- **Environment Configuration:** Configured 32-byte `AES_SECRET_KEY` in `/app/alphaclasses-backend/.env` to eliminate crypto warning and persist encrypted session data across restarts.
+- **Git Code Synchronization:** Removed `backend/` from `.gitignore` (safely preserving `*.pem` and `.env`) and committed both Frontend and Backend code to [GitHub repo](https://github.com/developerrhai/alpha_classes.git).
+- **Production Deployment:** Deployed updated backend code to EC2 path `/app/alphaclasses-backend/` and restarted PM2 process `alphaclasses-backend` with `--update-env`.
