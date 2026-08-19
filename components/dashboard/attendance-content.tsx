@@ -173,6 +173,26 @@ export function AttendanceContent() {
   const handleSaveEdit = async () => {
     if (!editingRecord) return;
     try {
+      const attendanceChanged =
+        editStatus !== editingRecord.status ||
+        (editPunchIn || "") !== (editingRecord.punchIn || "") ||
+        (editPunchOut || "") !== (editingRecord.punchOut || "");
+
+      const payload: any = {
+        userId: editingRecord.student.id,
+        studentCode: editingRecord.student.code,
+        newBiometricCode: editBioCode,
+        date,
+        batchId: editingRecord.batch.id,
+        role
+      };
+
+      if (attendanceChanged) {
+        payload.status = editStatus;
+        payload.punchIn = editPunchIn || null;
+        payload.punchOut = editPunchOut || null;
+      }
+
       const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/alphaclasses/api";
       const headers = getHeaders();
       const res = await fetch(`${apiBase}/attendance/record`, {
@@ -181,17 +201,7 @@ export function AttendanceContent() {
           ...headers,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          userId: editingRecord.student.id,
-          studentCode: editingRecord.student.code,
-          newBiometricCode: editBioCode,
-          date,
-          status: editStatus,
-          punchIn: editPunchIn || null,
-          punchOut: editPunchOut || null,
-          batchId: editingRecord.batch.id,
-          role
-        })
+        body: JSON.stringify(payload)
       });
 
       if (!res.ok) throw new Error("Failed to record manual adjustment.");

@@ -182,17 +182,19 @@ router.put("/record", protect, authorize(["ADMIN", "TEACHER"]), async (req, res)
       await db.query(`UPDATE ${table} SET biometric_code = ? WHERE id = ?`, [newBiometricCode || null, targetUserId]);
     }
 
-    // Upsert the record into attendance table
-    await db.query(
-      `INSERT INTO attendance (user_id, role, date, status, punch_in_time, punch_out_time, source, batch_id)
-       VALUES (?, ?, ?, ?, ?, ?, 'Manual', ?)
-       ON DUPLICATE KEY UPDATE 
-         status = COALESCE(VALUES(status), status),
-         punch_in_time = COALESCE(VALUES(punch_in_time), punch_in_time),
-         punch_out_time = COALESCE(VALUES(punch_out_time), punch_out_time),
-         source = 'Manual'`,
-      [targetUserId, targetRole, date, status || null, punchIn || null, punchOut || null, batchId || null]
-    );
+    // Upsert the record into attendance table only if status is provided
+    if (status) {
+      await db.query(
+        `INSERT INTO attendance (user_id, role, date, status, punch_in_time, punch_out_time, source, batch_id)
+         VALUES (?, ?, ?, ?, ?, ?, 'Manual', ?)
+         ON DUPLICATE KEY UPDATE 
+           status = COALESCE(VALUES(status), status),
+           punch_in_time = COALESCE(VALUES(punch_in_time), punch_in_time),
+           punch_out_time = COALESCE(VALUES(punch_out_time), punch_out_time),
+           source = 'Manual'`,
+        [targetUserId, targetRole, date, status, punchIn || null, punchOut || null, batchId || null]
+      );
+    }
 
     return res.json({ success: true, message: `Attendance updated for ${studentCode || targetUserId} on ${date}` });
   } catch (err) {
