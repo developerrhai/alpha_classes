@@ -9,7 +9,7 @@ const getSmartOfficeConfig = () => {
   const isConfigured = !!(baseUrl && apiKey && serialNumber);
 
   return {
-    baseUrl: baseUrl || "http://65.2.70.49",
+    baseUrl: baseUrl || "http://15.252.103.121",
     apiKey: apiKey || "371114072602",
     serialNumber: serialNumber || "", // Kept empty if not strictly needed
     isConfigured
