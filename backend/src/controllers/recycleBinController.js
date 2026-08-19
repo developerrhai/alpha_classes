@@ -4,7 +4,7 @@ const pool = require('../config/db');
 const softDeleteStudent = async (req, res) => {
   const { id } = req.params;
   try {
-    const [result] = await pool.query('UPDATE students SET deleted_at = NOW() WHERE id = ? AND admin_id = ?', [id, req.user.id]);
+    const [result] = await pool.query('UPDATE students SET deleted_at = NOW() WHERE id = ?', [id]);
     
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'Student not found or already deleted' });
@@ -19,7 +19,7 @@ const softDeleteStudent = async (req, res) => {
 // Get Recycle Bin (Soft deleted students)
 const getRecycleBin = async (req, res) => {
   try {
-    const [deletedStudents] = await pool.query('SELECT id, name, email, deleted_at FROM students WHERE admin_id = ? AND deleted_at IS NOT NULL', [req.user.id]);
+    const [deletedStudents] = await pool.query('SELECT id, name, email, deleted_at FROM students WHERE deleted_at IS NOT NULL');
     res.json({ deletedStudents });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -30,7 +30,7 @@ const getRecycleBin = async (req, res) => {
 const restoreStudent = async (req, res) => {
   const { id } = req.body;
   try {
-    const [result] = await pool.query('UPDATE students SET deleted_at = NULL WHERE id = ? AND admin_id = ?', [id, req.user.id]);
+    const [result] = await pool.query('UPDATE students SET deleted_at = NULL WHERE id = ?', [id]);
     
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'Student not found in recycle bin' });
@@ -46,7 +46,7 @@ const restoreStudent = async (req, res) => {
 const hardDeleteStudent = async (req, res) => {
   const { id } = req.params;
   try {
-    const [result] = await pool.query('DELETE FROM students WHERE id = ? AND admin_id = ? AND deleted_at IS NOT NULL', [id, req.user.id]);
+    const [result] = await pool.query('DELETE FROM students WHERE id = ? AND deleted_at IS NOT NULL', [id]);
     
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'Student not found in recycle bin' });
