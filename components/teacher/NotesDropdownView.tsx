@@ -75,7 +75,7 @@ export function NotesDropdownView() {
   const loadBoards = async () => {
     try {
       const data = await getBoards();
-      setBoards(data?.data || data || []);
+      setBoards((Array.isArray(data?.data) ? data.data : (Array.isArray(data) ? data : [])));
     } catch (err) { 
       toast.error("Failed to load boards"); 
     }
@@ -84,7 +84,7 @@ export function NotesDropdownView() {
   const fetchBatches = async (branch_id: number) => {
     try {
       const data = await getBatches(branch_id);
-      setBatches(data?.data || data || []);
+      setBatches((Array.isArray(data?.data) ? data.data : (Array.isArray(data) ? data : [])));
     } catch (err) { 
       toast.error("Failed to load batches"); 
     }
@@ -93,7 +93,7 @@ export function NotesDropdownView() {
   const fetchStandards = async (board_id: number, batch_id: number, branch_id: number) => {
     try {
       const data = await getStandards(board_id, batch_id, branch_id);
-      setStandards(data?.data || data || []);
+      setStandards((Array.isArray(data?.data) ? data.data : (Array.isArray(data) ? data : [])));
     } catch (err) { 
       toast.error("Failed to load standards"); 
     }
@@ -102,7 +102,7 @@ export function NotesDropdownView() {
   const fetchSubjects = async (stand_id: number, branch_id: number, batch_id: number, board_id: number) => {
     try {
       const data = await getSubjects(stand_id, branch_id, batch_id, board_id);
-      setSubjects(data?.data || data || []);
+      setSubjects((Array.isArray(data?.data) ? data.data : (Array.isArray(data) ? data : [])));
     } catch (err) { 
       toast.error("Failed to load subjects"); 
     }
@@ -111,7 +111,7 @@ export function NotesDropdownView() {
   const fetchChapters = async (sub_id: number, stand_id: number, branch_id: number, batch_id: number, board_id: number) => {
     try {
       const data = await getChapters(sub_id, stand_id, branch_id, batch_id, board_id);
-      setChapters(data?.data || data || []);
+      setChapters((Array.isArray(data?.data) ? data.data : (Array.isArray(data) ? data : [])));
     } catch (err) { 
       toast.error("Failed to load chapters"); 
     }
@@ -121,7 +121,7 @@ export function NotesDropdownView() {
     setLoadingNotes(true);
     try {
       const data = await getNotes(chap_id, sub_id, stand_id, branch_id, batch_id, board_id);
-      setNotes(data?.data || data || []);
+      setNotes((Array.isArray(data?.data) ? data.data : (Array.isArray(data) ? data : [])));
     } catch (err) { 
       toast.error("Failed to load notes"); 
     } finally {
