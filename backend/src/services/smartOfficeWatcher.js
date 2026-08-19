@@ -1,7 +1,7 @@
 const axios = require("axios");
 const db = require("../config/db");
 const notificationService = require("./notificationService");
-const { getSmartOfficeConfig, timeToMinutes } = require("./smartOffice.service");
+const { getSmartOfficeConfig, timeToMinutes, syncBiometricAttendance } = require("./smartOffice.service");
 
 let lastLogTime = null; // store last processed punch
 let isFirstRun = true;  // skip sending notifications on startup for historical logs today
@@ -186,13 +186,33 @@ async function checkNewPunches() {
 }
 
 function startWatcher() {
-  // Run every 30 seconds
+  // Run every 30 seconds for push notifications
   setInterval(checkNewPunches, 30000);
+
+  // Run database auto-sync every 5 minutes (300000 ms)
+  setInterval(async () => {
+    try {
+      console.log("[SmartOfficeWatcher] Running scheduled background DB sync...");
+      await syncBiometricAttendance(todayDate());
+    } catch (err) {
+      console.error("[SmartOfficeWatcher] Scheduled DB sync failed:", err.message);
+    }
+  }, 300000);
 
   // Run once on startup after a short delay
   setTimeout(checkNewPunches, 5000);
 
-  console.log("[SmartOfficeWatcher] ✅ Attendance watcher started (polling every 30s)");
+  // Run an initial DB sync shortly after startup as well
+  setTimeout(async () => {
+    try {
+      console.log("[SmartOfficeWatcher] Running initial background DB sync...");
+      await syncBiometricAttendance(todayDate());
+    } catch (err) {
+      console.error("[SmartOfficeWatcher] Initial DB sync failed:", err.message);
+    }
+  }, 10000);
+
+  console.log("[SmartOfficeWatcher] ✅ Attendance watcher started (polling 30s, auto-saving 5m)");
 }
 
 module.exports = { startWatcher, checkNewPunches };
