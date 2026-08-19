@@ -535,23 +535,22 @@ const handlePrint = async (inv: Invoice) => {
         <div class="payment-signature">
           <div class="payment">
             <p>Scan &amp; Pay via UPI</p>
-            <img style="width: 180px;height:180px;" src="/qr.jpeg" />
+            <img style="width: 180px;height:180px;" src="/paymentqr.png" />
           </div>
 
           <div class="or-divider">—<br/>OR<br/>—</div>
 
-          <!-- ✅ UPDATED: Bank details for BRIGHT CLASSES EDUCATION PRIVATE LIMITED -->
+          <!-- ✅ UPDATED: Bank details for ALPHA CLASSES -->
           <div class="bank-details">
             <p class="bank-title">Bank Transfer Details</p>
-            <p>Bank Name &nbsp;&nbsp;&nbsp;&nbsp;: AU SMALL FINANCE BANK</p>
-            <p>Account Name &nbsp;: BRIGHT CLASSES EDUCATION PRIVATE LIMITED</p>
-            <p>Account No. &nbsp;&nbsp;: 2602421712535347</p>
+            <p>Bank Name &nbsp;&nbsp;&nbsp;&nbsp;: AXIS BANK</p>
+            <p>Account Name &nbsp;: ALPHA CLASSES</p>
+            <p>Account No. &nbsp;&nbsp;: 925020043590915</p>
             <p>Account Type &nbsp;: CURRENT</p>
-            <p>RTGS/NEFT IFSC : AUBL0004217</p>
           </div>
 
           <div class="signature">
-            <p>For : BRIGHT CLASSES EDUCATION PRIVATE LIMITED</p>
+            <p>For : ALPHA CLASSES</p>
             <div class="sig-line">
               <div class="auth">Authorized Signatory</div>
             </div>
