@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/lib/store";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import { recycleBinApi } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -28,10 +28,8 @@ export default function RecycleBinPage() {
 
   const fetchRecycleBin = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/recycle-bin`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setDeletedStudents(response.data.deletedStudents || []);
+      const response = await recycleBinApi.getAll();
+      setDeletedStudents(response.deletedStudents || []);
     } catch (error) {
       console.error("Failed to fetch recycle bin", error);
       toast.error("Failed to load recycle bin");
@@ -56,9 +54,7 @@ export default function RecycleBinPage() {
 
   const handleRestore = async (id: number) => {
     try {
-      await axios.post(`${BASE_URL}/recycle-bin/restore`, { id }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await recycleBinApi.restore(id);
       toast.success("Student restored successfully");
       fetchRecycleBin();
     } catch (error) {
@@ -69,9 +65,7 @@ export default function RecycleBinPage() {
   const handleHardDelete = async (id: number) => {
     if (!confirm("Are you sure you want to permanently delete this student? This cannot be undone.")) return;
     try {
-      await axios.delete(`${BASE_URL}/recycle-bin/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await recycleBinApi.remove(id);
       toast.success("Student permanently deleted");
       fetchRecycleBin();
     } catch (error) {

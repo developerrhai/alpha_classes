@@ -393,3 +393,13 @@ export const inventoryApi = {
   exportItemsUrl: () => `${BASE}/inventory/export/items`,
   exportDistributionsUrl: (params: string) => `${BASE}/inventory/export/distributions${params}`,
 };
+
+/* ----------------------------------------------------------
+   RECYCLE BIN
+---------------------------------------------------------- */
+export const recycleBinApi = {
+  getAll: () => get("/recycle-bin"),
+  restore: (id: number) => post("/recycle-bin/restore", { id }),
+  remove: (id: number) => del(`/recycle-bin/${id}`),
+};
+
