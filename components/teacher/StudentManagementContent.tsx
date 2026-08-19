@@ -587,7 +587,7 @@ export default function StudentManagementContent() {
             father_phone: r.father_phone || "", subject: r.subject || "",
             marks: r.marks !== undefined ? Number(r.marks) : undefined,
             examination: r.examination || "", exam_date: r.exam_date || "",
-            standard: r.standard || "", board: r.board || "", 
+            standard: r.standard || "", board: r.board || "", location: r.location || "",
           }));
         } else {
           const rows = parseCSV(text);
@@ -596,7 +596,7 @@ export default function StudentManagementContent() {
             father_phone: r.father_phone || "", subject: r.subject || "",
             marks: r.marks !== "" && r.marks !== undefined ? Number(r.marks) : undefined,
             examination: r.examination || "", exam_date: r.exam_date || "",
-            standard: r.standard || "", board: r.board || "", 
+            standard: r.standard || "", board: r.board || "", location: r.location || "",
           }));
         }
         if (parsed.length === 0) throw new Error("No valid rows found in file.");
