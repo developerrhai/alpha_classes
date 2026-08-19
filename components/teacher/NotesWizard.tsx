@@ -29,7 +29,6 @@ type Note = {
 };
 
 const STEP_LABELS = [
-  "Select Branch",
   "Select Batch",
   "Select Board",
   "Select Standard",
@@ -39,7 +38,6 @@ const STEP_LABELS = [
 ];
 
 const ADD_LABELS = [
-  "Add Branch",
   "Add Batch",
   "Add Board",
   "Add Standard",
@@ -49,7 +47,7 @@ const ADD_LABELS = [
 ];
 
 export function NotesWizard() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [open, setOpen] = useState(false);
 
   // Data states
@@ -73,8 +71,11 @@ export function NotesWizard() {
   const loadBranches = async () => {
     try {
       const data = await getBranches();
-      console.log("Fetched Branches:", data);
-      setBranches(data?.data?.branches || data?.branches || []);
+      const brs = data?.data?.branches || data?.branches || [];
+      if (brs.length > 0) {
+        setSelectedBranch(brs[0]);
+        fetchBatches(brs[0].branch_id);
+      }
     } catch (err) { toast.error("Failed to load branches"); }
   };
 
@@ -126,12 +127,12 @@ export function NotesWizard() {
   }, []);
 
   const goBack = () => {
-    if (step === 1) return;
+    if (step === 2) return;
     setStep((s) => s - 1);
   };
 
   const reset = () => {
-    setStep(1);
+    setStep(2);
     setBatches([]); setBoards([]); setStandards([]); 
     setSubjects([]); setChapters([]); setNotes([]);
     setSelectedBranch(null); setSelectedBatch(null); setSelectedBoard(null);
@@ -182,18 +183,18 @@ export function NotesWizard() {
           </button>
         )}
         <div>
-          <h2 className="text-2xl font-bold">{STEP_LABELS[step - 1]}</h2>
+          <h2 className="text-2xl font-bold">{STEP_LABELS[step - 2]}</h2>
         </div>
       </div>
 
       {/* Progress */}
-      <div className="grid grid-cols-7 gap-2 mt-6 mb-8">
+      <div className="grid grid-cols-6 gap-2 mt-6 mb-8">
         {STEP_LABELS.map((_, i) => (
           <div
             key={i}
             className={cn(
               "h-1.5 rounded-full transition-all",
-              i + 1 <= step ? "bg-primary" : "bg-muted"
+              i + 1 <= (step - 1) ? "bg-primary" : "bg-muted"
             )}
           />
         ))}
@@ -336,7 +337,7 @@ export function NotesWizard() {
         </SheetTrigger>
         <SheetContent side="bottom" className="rounded-t-3xl max-h-[90vh] overflow-y-auto">
           <SheetHeader className="text-left">
-            <SheetTitle>{ADD_LABELS[step - 1]}</SheetTitle>
+            <SheetTitle>{ADD_LABELS[step - 2]}</SheetTitle>
           </SheetHeader>
           <AddNoteForm
             step={step}

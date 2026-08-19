@@ -220,18 +220,17 @@ router.post("/", async (req, res) => {
 
     const adminId = admins[0].id;
 
-    // ✅ Insert Query
+    // o. Insert Query
     const query = `
       INSERT INTO inquiry_extra
-      (admin_id, name, phone, father_name, father_phone, course, location, board, standard, status, video,
+      (name, phone, father_name, father_phone, course, location, board, standard, status, video,
        dob, email, address, college_name, college_timing, last_exam_marks,
        father_occupation, mother_occupation, future_plans,
        reference, sibling_name, sex, taking_coaching, hostel_required, inquiry_date)
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,CURDATE())
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,CURDATE())
     `;
 
     const values = [
-      adminId,
       name,
       phone,
       father_name || "",

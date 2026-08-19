@@ -481,9 +481,8 @@ const handlePrint = async (inv: Invoice) => {
         <div class="top-section">
           <div class="bill-to">
             <h3>Bill To</h3>
-            <p style="font-size:10px; color:#555;"><b>Branch 1:</b> 104, 1st Floor, VJ Centra, Palash Plus, Pink City Road, Opp. Gold Gym, Near Mount Litera School, Wakad - 411057</p>
-            <p style="font-size:10px; color:#555; margin-top:2px;"><b>Branch 2:</b> 401B, 4th Floor, Pristine Square, Opp. Pristine Prolife Ph-1, Behind Millennium Mall, Wakad - 411057</p>
-            <p style="font-size:10px; color:#555; margin-top:2px;"><b>Contact:</b> 9175741177</p>
+            <p style="font-size:10px; color:#555;">Alpha Classes Rahatani - Kalewadi .<br/>Behind Kunal Hotel, Rahatani</p>
+            <p style="font-size:10px; color:#555; margin-top:2px;"><b>Contact:</b> 9349144939</p>
             <p><b>${inv.student_name}</b></p>
             <p>Contact No. &nbsp;: ${studentPhone || "-"}</p>
             <p>Student ID &nbsp;&nbsp;: ${inv.student_id || "-"}</p>
@@ -887,7 +886,7 @@ const handlePrint = async (inv: Invoice) => {
               <div className="space-y-3">
                 <div className="text-center pb-4 border-b">
                   <h3 className="text-lg font-bold text-blue-600">Alpha Classes</h3>
-                  <p className="text-xs text-muted-foreground mt-1">Shop No 7, Kalewadi - Rahatani Rd, Adinath Colony, Rahatani, Pimpri-Chinchwad, Maharashtra 411017<br/>+91 93591 44939</p>
+                  <p className="text-xs text-muted-foreground mt-1">Alpha Classes Rahatani - Kalewadi .<br/>Behind Kunal Hotel, Rahatani<br/>+91 9349144939</p>
                   <p className="text-muted-foreground">Invoice #INV{String(selected.id).padStart(3, "0")}</p>
                 </div>
                 {([

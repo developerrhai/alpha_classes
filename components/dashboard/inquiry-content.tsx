@@ -33,7 +33,6 @@ export function InquiryContent() {
   const [loading,         setLoading]         = useState(true)
   const [saving,          setSaving]          = useState(false)
   const [filterDate,      setFilterDate]      = useState("all")
-  const [filterLocation,  setFilterLocation]  = useState("all")
   const [filterStandard,  setFilterStandard]  = useState("all")
   const [modalOpen,       setModalOpen]       = useState(false)
   const [editing,         setEditing]         = useState<Inquiry | null>(null)
@@ -44,13 +43,12 @@ export function InquiryContent() {
     try {
       const res: any = await inquiriesApi.getAll({
         date_filter: filterDate     !== "all" ? filterDate     : undefined,
-        location:    filterLocation !== "all" ? filterLocation : undefined,
         standard:    filterStandard !== "all" ? filterStandard : undefined,
       })
       setInquiries(res.data)
     } catch (err) { console.error(err) }
     finally { setLoading(false) }
-  }, [filterDate, filterLocation, filterStandard])
+  }, [filterDate, filterStandard])
 
   useEffect(() => { load() }, [load])
 
@@ -109,15 +107,7 @@ export function InquiryContent() {
                 <SelectItem value="last30">Last 30 Days</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={filterLocation} onValueChange={setFilterLocation}>
-              <SelectTrigger><SelectValue placeholder="All Locations" /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Locations</SelectItem>
-                <SelectItem value="CHINCHWAD">Chinchwad</SelectItem>
-                <SelectItem value="THERGAON">Thergaon</SelectItem>
-                <SelectItem value="WAKAD">Wakad</SelectItem>
-              </SelectContent>
-            </Select>
+
             <Select value={filterStandard} onValueChange={setFilterStandard}>
               <SelectTrigger><SelectValue placeholder="All Standards" /></SelectTrigger>
               <SelectContent>
@@ -139,7 +129,6 @@ export function InquiryContent() {
                     <TableHead className="text-white font-semibold">Name</TableHead>
                     <TableHead className="text-white font-semibold hidden sm:table-cell">Phone</TableHead>
                     <TableHead className="text-white font-semibold hidden md:table-cell">Course</TableHead>
-                    <TableHead className="text-white font-semibold hidden lg:table-cell">Location</TableHead>
                     <TableHead className="text-white font-semibold">Std</TableHead>
                     <TableHead className="text-white font-semibold">Status</TableHead>
                     <TableHead className="text-white font-semibold hidden sm:table-cell">Video</TableHead>
@@ -154,7 +143,6 @@ export function InquiryContent() {
                       <TableCell className="font-medium">{inq.name}</TableCell>
                       <TableCell className="hidden sm:table-cell">{inq.phone}</TableCell>
                       <TableCell className="hidden md:table-cell">{inq.course}</TableCell>
-                      <TableCell className="hidden lg:table-cell">{inq.location}</TableCell>
                       <TableCell>{inq.standard}</TableCell>
                       <TableCell><Badge className={statusColors[inq.status] || "bg-gray-100 text-gray-700"}>{inq.status}</Badge></TableCell>
                       <TableCell className="hidden sm:table-cell">
@@ -194,7 +182,6 @@ export function InquiryContent() {
               </div>
             ))}
             {[
-              { key:"location", label:"Location", items:["Main Branch"] },
               { key:"board",    label:"Board",    items:["CBSE","ICSE","State"] },
               { key:"standard", label:"Standard", items: ["1st","2nd","3rd","4th","5th","6th","7th","8th","9th","10th","11th","12th","Dropper","Other"] },
               { key:"status",   label:"Status",   items:["New","Contacted","Follow Up","Admission Done","Not Interested"] },

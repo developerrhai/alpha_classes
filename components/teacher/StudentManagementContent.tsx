@@ -24,14 +24,14 @@ import {
   CheckSquare,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Input } from "@/components/teacher/ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/teacher/ui/select";
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -39,16 +39,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/teacher/ui/table";
-import { Button } from "@/components/teacher/ui/button";
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/teacher/ui/dialog";
-import { Label } from "@/components/teacher/ui/label";
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { studentsApi, studentsUniversalApi, teacherStudentAssessmentsApi, studentAttendanceApi } from "@/lib/api";
 import { getSubjects } from "@/lib/notesApi";
 
@@ -63,7 +63,6 @@ type Student = {
   exam_date?: string;
   standard: string;
   board: string;
-  location: string;
 };
 
 type AssessmentRow = {
@@ -369,18 +368,18 @@ export default function StudentManagementContent() {
       const matchesLocation = locationFilter === "all" || student.location === locationFilter;
       return matchesQuery && matchesStandard && matchesBoard && matchesLocation;
     });
-  }, [students, searchTerm, standardFilter, boardFilter, locationFilter]);
+  }, [students, searchTerm, standardFilter, boardFilter]);
 
   const modalFilteredStudents = useMemo(() => {
     return students.filter((student) => {
       const matchesLocation = modalLocationFilter === "all" || student.location === modalLocationFilter;
       const matchesBoard = modalBoardFilter === "all" || student.board === modalBoardFilter;
       const matchesStandard = modalStandardFilter === "all" || student.standard === modalStandardFilter;
-      return matchesLocation && matchesBoard && matchesStandard;
+      return matchesBoard && matchesStandard;
     });
-  }, [students, modalLocationFilter, modalBoardFilter, modalStandardFilter]);
+  }, [students, modalBoardFilter, modalStandardFilter]);
 
-  useEffect(() => { setPage(1); }, [searchTerm, standardFilter, boardFilter, locationFilter]);
+  useEffect(() => { setPage(1); }, [searchTerm, standardFilter, boardFilter]);
 
   const paginatedStudents = useMemo(() => {
     const start = (page - 1) * pageSize;
@@ -587,7 +586,7 @@ export default function StudentManagementContent() {
             father_phone: r.father_phone || "", subject: r.subject || "",
             marks: r.marks !== undefined ? Number(r.marks) : undefined,
             examination: r.examination || "", exam_date: r.exam_date || "",
-            standard: r.standard || "", board: r.board || "", location: r.location || "",
+            standard: r.standard || "", board: r.board || "", 
           }));
         } else {
           const rows = parseCSV(text);
@@ -596,7 +595,7 @@ export default function StudentManagementContent() {
             father_phone: r.father_phone || "", subject: r.subject || "",
             marks: r.marks !== "" && r.marks !== undefined ? Number(r.marks) : undefined,
             examination: r.examination || "", exam_date: r.exam_date || "",
-            standard: r.standard || "", board: r.board || "", location: r.location || "",
+            standard: r.standard || "", board: r.board || "", 
           }));
         }
         if (parsed.length === 0) throw new Error("No valid rows found in file.");
@@ -1212,7 +1211,7 @@ export default function StudentManagementContent() {
                     <TableHeader>
                       <TableRow>
                         <TableHead>Name</TableHead><TableHead>Phone</TableHead><TableHead>Std</TableHead>
-                        <TableHead>Board</TableHead><TableHead>Location</TableHead><TableHead>Marks</TableHead>
+                        <TableHead>Board</TableHead><TableHead>Marks</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>

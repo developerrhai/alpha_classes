@@ -13,11 +13,7 @@ const BOARDS = [
   "IB",
 ]
 
-const BRANCHES = [
-  "Thergaon",
-  "Wakad",
-  "Chinchwad",
-]
+
 
 const STANDARDS = [
   "1st Standard",
@@ -76,7 +72,7 @@ const initial: FormData = {
   studentContact: "",
   parentContact: "",
   fatherName: "",        // NEW
-  location: "",          // NEW
+  location: "Rahatani",          // NEW
   batch: "",
   standard: "",
   lastExamMarks: "",
@@ -116,7 +112,7 @@ export default function InquiryFormPage() {
     if (step === 1) {
       if (!form.batch) return "Please select a board"
       if (!form.standard) return "Please select a standard"
-      if (!form.location) return "Please select a branch"
+
     }
     if (step === 2) {
       if (!form.address.trim()) return "Address is required"
@@ -321,12 +317,7 @@ export default function InquiryFormPage() {
                       {STANDARDS.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
                   </Field>
-                  <Field label="Select Branch" required>
-                    <select value={form.location} onChange={e => set("location", e.target.value)} className={selectCls}>
-                      <option value="">-- Select Branch --</option>
-                      {BRANCHES.map(b => <option key={b} value={b}>{b}</option>)}
-                    </select>
-                  </Field>
+
                   <Field label="Last Exam Marks / Grade %">
                     <input
                       type="text" placeholder="e.g. 85% or A+"

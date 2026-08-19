@@ -60,7 +60,13 @@ export function NotesDropdownView() {
   const loadBranches = async () => {
     try {
       const data = await getBranches();
-      setBranches(data?.data?.branches || data?.branches || []);
+      const brs = data?.data?.branches || data?.branches || [];
+      setBranches(brs);
+      if (brs.length > 0) {
+        const id = String(brs[0].branch_id);
+        setSelectedBranchId(id);
+        fetchBatches(Number(id));
+      }
     } catch (err) { 
       toast.error("Failed to load branches"); 
     }
@@ -214,7 +220,6 @@ export function NotesDropdownView() {
   };
 
   const handleReset = () => {
-    setSelectedBranchId("");
     setSelectedBatchId("");
     setSelectedBoardId("");
     setSelectedStandardId("");
@@ -271,20 +276,7 @@ export function NotesDropdownView() {
 
       {/* Grid of Dropdowns */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 bg-card p-6 rounded-2xl border border-border shadow-[var(--shadow-soft)]">
-        {/* Branch Select */}
-        <div className="space-y-1.5">
-          <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Branch</label>
-          <select
-            className="w-full h-11 rounded-xl border border-input bg-background px-3 text-sm focus:ring-2 focus:ring-primary outline-none transition-all"
-            value={selectedBranchId}
-            onChange={(e) => handleBranchChange(e.target.value)}
-          >
-            <option value="">Select Branch</option>
-            {branches.map((b) => (
-              <option key={b.branch_id} value={b.branch_id}>{b.branch_name}</option>
-            ))}
-          </select>
-        </div>
+
 
         {/* Batch Select */}
         <div className="space-y-1.5">
@@ -514,7 +506,7 @@ function DropdownManageForm({
   }
 }) {
   const [loading, setLoading] = useState(false);
-  const [addType, setAddType] = useState<"branch" | "batch" | "board" | "standard" | "subject" | "chapter" | "note">("branch");
+  const [addType, setAddType] = useState<"branch" | "batch" | "board" | "standard" | "subject" | "chapter" | "note">("batch");
 
   // Form selections / parents
   const [formBranchId, setFormBranchId] = useState(initialValues.branchId);
@@ -711,7 +703,7 @@ function DropdownManageForm({
           onChange={(e) => setAddType(e.target.value as any)}
           disabled={loading}
         >
-          <option value="branch">Branch</option>
+
           <option value="batch">Batch</option>
           <option value="board">Board</option>
           <option value="standard">Standard</option>
@@ -723,22 +715,7 @@ function DropdownManageForm({
 
       {/* Conditionally rendered parent filters in form */}
       
-      {addType === "batch" && (
-        <div className="space-y-1.5">
-          <label className="text-xs font-semibold uppercase text-muted-foreground">Parent Branch</label>
-          <select
-            className="w-full h-11 rounded-xl border border-input bg-background px-3 text-sm focus:ring-2 focus:ring-primary outline-none transition-all"
-            value={formBranchId}
-            onChange={(e) => setFormBranchId(e.target.value)}
-            disabled={loading}
-          >
-            <option value="">Select Branch</option>
-            {dropdowns.branches.map((b) => (
-              <option key={b.branch_id} value={b.branch_id}>{b.branch_name}</option>
-            ))}
-          </select>
-        </div>
-      )}
+
 
       {addType === "standard" && (
         <div className="grid grid-cols-2 gap-4">
