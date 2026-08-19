@@ -71,7 +71,7 @@ exports.createInquiryExtra = async (req, res) => {
         phone,
         father_name,
         father_phone,
-        dob,
+        dob || null,
         sex,
         email,
         address,

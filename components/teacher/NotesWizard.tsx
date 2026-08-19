@@ -613,10 +613,22 @@ const [selectedTeacherId, setSelectedTeacherId] = useState<string>("");
       {/* Specific Batch Inputs (Step 2) */}
       {step === 2 && (
         <div className="grid grid-cols-2 gap-4">
-          <Input type="time" placeholder="Start Time" value={startTime} onChange={(e) => setStartTime(e.target.value)} disabled={loading} />
-          <Input type="time" placeholder="End Time" value={endTime} onChange={(e) => setEndTime(e.target.value)} disabled={loading} />
-          <Input type="date" placeholder="Start Date" value={startDate} onChange={(e) => setStartDate(e.target.value)} disabled={loading} />
-          <Input type="date" placeholder="End Date" value={endDate} onChange={(e) => setEndDate(e.target.value)} disabled={loading} />
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-muted-foreground ml-1">Start Time</label>
+            <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} disabled={loading} />
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-muted-foreground ml-1">End Time</label>
+            <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} disabled={loading} />
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-muted-foreground ml-1">Start Date</label>
+            <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} disabled={loading} />
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-muted-foreground ml-1">End Date</label>
+            <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} disabled={loading} />
+          </div>
         </div>
       )}
 
@@ -683,7 +695,7 @@ const [selectedTeacherId, setSelectedTeacherId] = useState<string>("");
       <Button
         type="submit"
         disabled={loading}
-        className="w-full h-12 rounded-full text-base mt-2"
+        className="w-full h-12 rounded-full text-base mt-2 text-white"
         style={{ background: "var(--gradient-primary)" }}
       >
         {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
