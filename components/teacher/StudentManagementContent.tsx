@@ -63,6 +63,7 @@ type Student = {
   exam_date?: string;
   standard: string;
   board: string;
+  location: string;
 };
 
 type AssessmentRow = {
