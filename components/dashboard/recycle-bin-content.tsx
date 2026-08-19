@@ -17,7 +17,7 @@ export function RecycleBinContent() {
   const [mounted, setMounted] = useState(false);
   const hasFetched = React.useRef(false);
 
-  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/api";
+  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/alphaclasses/api";
 
   useEffect(() => {
     setMounted(true);

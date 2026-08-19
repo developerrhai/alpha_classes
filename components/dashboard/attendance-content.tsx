@@ -78,7 +78,7 @@ export function AttendanceContent() {
   const fetchAttendance = useCallback(async () => {
     setLoading(true);
     try {
-      const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/api";
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/alphaclasses/api";
       const headers = getHeaders();
       const res = await fetch(`${apiBase}/attendance?date=${date}&role=${role}`, { headers });
       
@@ -103,7 +103,7 @@ export function AttendanceContent() {
   const handleSync = async () => {
     setSyncing(true);
     try {
-      const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/api";
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/alphaclasses/api";
       const headers = getHeaders();
       const res = await fetch(`${apiBase}/attendance/sync`, {
         method: "POST",
@@ -133,7 +133,7 @@ export function AttendanceContent() {
   // Mark On Leave
   const handleMarkLeave = async (record: AttendanceRecord) => {
     try {
-      const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/api";
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/alphaclasses/api";
       const headers = getHeaders();
       const res = await fetch(`${apiBase}/attendance/leave`, {
         method: "POST",
@@ -171,7 +171,7 @@ export function AttendanceContent() {
   const handleSaveEdit = async () => {
     if (!editingRecord) return;
     try {
-      const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/api";
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/alphaclasses/api";
       const headers = getHeaders();
       const res = await fetch(`${apiBase}/attendance/record`, {
         method: "PUT",
@@ -204,7 +204,7 @@ export function AttendanceContent() {
   const handleNotifyWhatsApp = async () => {
     setNotifying(true);
     try {
-      const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/api";
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://institute-api.rhaitech.online/alphaclasses/api";
       const headers = getHeaders();
       const res = await fetch(`${apiBase}/attendance/notify-whatsapp`, {
         method: "POST",
