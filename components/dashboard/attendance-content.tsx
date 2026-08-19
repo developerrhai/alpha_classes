@@ -72,6 +72,7 @@ export function AttendanceContent() {
   const [editStatus, setEditStatus] = useState<AttendanceRecord["status"]>("Present");
   const [editPunchIn, setEditPunchIn] = useState("");
   const [editPunchOut, setEditPunchOut] = useState("");
+  const [editBioCode, setEditBioCode] = useState("");
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   // Fetch Attendance logs
@@ -164,6 +165,7 @@ export function AttendanceContent() {
     setEditStatus(record.status);
     setEditPunchIn(record.punchIn || "");
     setEditPunchOut(record.punchOut || "");
+    setEditBioCode(record.student.code || "");
     setIsEditOpen(true);
   };
 
@@ -180,7 +182,9 @@ export function AttendanceContent() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          userId: editingRecord.student.id,
           studentCode: editingRecord.student.code,
+          newBiometricCode: editBioCode,
           date,
           status: editStatus,
           punchIn: editPunchIn || null,
@@ -608,6 +612,17 @@ export function AttendanceContent() {
                 <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider">User Profile</p>
                 <p className="font-bold text-slate-800">{editingRecord.student.name} ({role})</p>
                 <p className="text-xs text-muted-foreground">ID: {editingRecord.student.code || "—"} • Batch: {editingRecord.batch.name}</p>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="adjBioCode">Biometric Code</Label>
+                <Input
+                  id="adjBioCode"
+                  type="text"
+                  placeholder="Device ID / Bio Code"
+                  value={editBioCode}
+                  onChange={(e) => setEditBioCode(e.target.value)}
+                />
               </div>
 
               <div className="space-y-1.5">

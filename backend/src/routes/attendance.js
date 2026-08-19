@@ -152,10 +152,10 @@ router.post("/leave", protect, authorize(["ADMIN", "TEACHER"]), async (req, res)
 
 // ── PUT /api/attendance/record (Manual Edit) ──────────────────────────────────
 router.put("/record", protect, authorize(["ADMIN", "TEACHER"]), async (req, res) => {
-  const { studentCode, date, status, punchIn, punchOut, batchId, role = 'STUDENT' } = req.body;
+  const { userId, studentCode, newBiometricCode, date, status, punchIn, punchOut, batchId, role = 'STUDENT' } = req.body;
 
-  if (!studentCode || !date) {
-    return res.status(400).json({ success: false, error: "studentCode and date are required" });
+  if ((!studentCode && !userId) || !date) {
+    return res.status(400).json({ success: false, error: "userId/studentCode and date are required" });
   }
 
   const validStatuses = ["Present", "Absent", "Late", "On Leave", "Half-Day"];
@@ -167,13 +167,20 @@ router.put("/record", protect, authorize(["ADMIN", "TEACHER"]), async (req, res)
     const targetRole = role.toUpperCase();
     const table = targetRole === 'STUDENT' ? 'students' : 'teachers';
 
-    // Get user id from biometric code
-    const [users] = await db.query(`SELECT id FROM ${table} WHERE biometric_code = ?`, [studentCode]);
-    if (users.length === 0) {
-      return res.status(404).json({ success: false, error: `User with biometric code "${studentCode}" not found` });
+    let targetUserId = userId;
+    if (!targetUserId) {
+      // Get user id from biometric code
+      const [users] = await db.query(`SELECT id FROM ${table} WHERE biometric_code = ?`, [studentCode]);
+      if (users.length === 0) {
+        return res.status(404).json({ success: false, error: `User with biometric code "${studentCode}" not found` });
+      }
+      targetUserId = users[0].id;
     }
 
-    const userId = users[0].id;
+    // Update biometric code if provided
+    if (newBiometricCode !== undefined) {
+      await db.query(`UPDATE ${table} SET biometric_code = ? WHERE id = ?`, [newBiometricCode || null, targetUserId]);
+    }
 
     // Upsert the record into attendance table
     await db.query(
@@ -184,10 +191,10 @@ router.put("/record", protect, authorize(["ADMIN", "TEACHER"]), async (req, res)
          punch_in_time = COALESCE(VALUES(punch_in_time), punch_in_time),
          punch_out_time = COALESCE(VALUES(punch_out_time), punch_out_time),
          source = 'Manual'`,
-      [userId, targetRole, date, status || null, punchIn || null, punchOut || null, batchId || null]
+      [targetUserId, targetRole, date, status || null, punchIn || null, punchOut || null, batchId || null]
     );
 
-    return res.json({ success: true, message: `Attendance updated for ${studentCode} on ${date}` });
+    return res.json({ success: true, message: `Attendance updated for ${studentCode || targetUserId} on ${date}` });
   } catch (err) {
     console.error("[Attendance] Record Manual Error:", err.message);
     return res.status(500).json({ success: false, error: err.message });
